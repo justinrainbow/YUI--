@@ -21,16 +21,15 @@
  * @param {String|HTMLElement} Element to make selectable
  * @param {Object} Additional config options
  */
-var Selectable = function(el,userConfig) {
+YAHOO.util.Selectable = function(el,userConfig) {
 	if (arguments) {
-		Selectable.prototype.init.apply(this,arguments);
+		YAHOO.util.Selectable.prototype.init.apply(this,arguments);
 	}
 };
 
 // create some short-name vars for easier access
-var util = YAHOO.util, lang = YAHOO.lang, Dom = util.Dom, Event = util.Event;
-
-util.Selectable = Selectable;
+var util = YAHOO.util, lang = YAHOO.lang,
+	Selectable = util.Selectable, Dom = util.Dom, Event = util.Event;
 	
 /**
  * CSS name to use for when an element is marked as "selected"
@@ -275,6 +274,13 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 		
 		Selectable.register(this);
 		
+		if ('LogWriter' in YAHOO.widget) {
+			this.logger = new YAHOO.widget.LogWriter('Selectable');
+		}
+		else {
+			this.logger = YAHOO;
+		}
+		
 		// Initialize the DOM Events required for the Selectable utility to work
 		this.initDomEvents();
 	},
@@ -323,6 +329,8 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 	 * @return {Array} matching elements
 	 */
 	getElements: function(start, end) {
+		this.logger.log('Finding elements between: ' + start + ' and ' + end);
+		
 		var children = this.getChildren();
 		
 		var getIndex = function(el) {
@@ -364,6 +372,8 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 			end = tmp;
 		}
 		
+		this.logger.log('Grabbing elements '+start+' - '+end, 'info');
+			
 		return children.slice( start, end + 1 );
 	},
 	
@@ -445,7 +455,11 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 	 */
 	selectRange: function(start, finish)
 	{
+		this.logger.log('Finding range of elements', 'info');
+		
 		var elements = this.getElements(start, finish);
+		
+		this.logger.log('Found: ' + elements.length, 'info');
 		
 		Dom.batch( elements, this.select, this, true );
 	},
@@ -534,7 +548,7 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 	handleMouseUpEvent: function(evt) {
 		this.mouseDown = false;
 		
-		if (this.overlayShown) {
+		if (this.usingOverlay) {
 			var elements = this.overlay.getContains();
 			
 			if (!evt.ctrlKey) {
@@ -545,7 +559,7 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 			
 			this.overlay.hide();
 			
-			this.overlayShown = false;
+			this.usingOverlay = false;
 		}
 	},
 	
@@ -559,11 +573,11 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 			return;
 		}
 		
-		if (this.overlayShown == false) {
+		if (this.usingOverlay == false) {
 			this.overlay.show();
 		}
 		
-		this.overlayShown = true;
+		this.usingOverlay = true;
 		
 		var xy     = Event.getXY(evt);
 		var initXy = this.initXy;

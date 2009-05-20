@@ -94,6 +94,7 @@ Selectable.Overlay.prototype = {
 	 * @method refreshCache
 	 */
 	refreshCache: function() {
+		YAHOO.log("Updating element cache", "debug", "SelectableOverlay");
 		var instances = Selectable.instances;
 		
 		for (var k in instances) {
@@ -548,7 +549,7 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 	handleMouseUpEvent: function(evt) {
 		this.mouseDown = false;
 		
-		if (this.overlayShown) {
+		if (this.usingOverlay) {
 			var elements = this.overlay.getContains();
 			
 			if (!evt.ctrlKey) {
@@ -559,7 +560,7 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 			
 			this.overlay.hide();
 			
-			this.overlayShown = false;
+			this.usingOverlay = false;
 		}
 	},
 	
@@ -573,11 +574,11 @@ YAHOO.extend(YAHOO.util.Selectable, YAHOO.util.Element, {
 			return;
 		}
 		
-		if (this.overlayShown == false) {
+		if (this.usingOverlay == false) {
 			this.overlay.show();
 		}
 		
-		this.overlayShown = true;
+		this.usingOverlay = true;
 		
 		var xy     = Event.getXY(evt);
 		var initXy = this.initXy;

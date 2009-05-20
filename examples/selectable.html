@@ -38,7 +38,7 @@
 		background-color: #ccc;
 	}
 </style>
-<script type='text/javascript' src='../lib/yui/yuiloader-dom-event/yuiloader-dom-event.js'></script>
+<script type='text/javascript' src='http://yui.yahooapis.com/2.7.0/build/yuiloader-dom-event/yuiloader-dom-event.js'></script>
 <script type='text/javascript'>
 	var Ex = YAHOO.namespace('example');
 	
@@ -50,13 +50,14 @@
 	}
 	
 	var loader = new YAHOO.util.YUILoader({
-		onSuccess: Ex.init
+		onSuccess: Ex.init,
+		filter:    'DEBUG'
 	});
 	
 	loader.addModule({
 		name: 'selectable',
 		type: 'js',
-		fullpath: '../src/selectable/selectable.js',
+		fullpath: '../src/selectable/selectable-min.js',
 		requires: ['element']
 	});
 	
