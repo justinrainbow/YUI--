@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+	Selectable Example
+</title>
+<style type='text/css'>
+	#selectable {
+		display:block;
+		width:1000px;
+	}
+	.ui-hidden {
+		display:none;
+	}
+	.ui-selectable {
+		background-color: #f2f2f2;
+		border: 1px solid #ccc;
+		margin: 18px;
+		padding: 18px;
+		float: left;
+		display: block;
+		width: 240px;
+	}
+	.ui-selectable-overlay {
+		position:absolute;
+		height:0;
+		width:0;
+		left:0;
+		top:0;
+		z-index:10;
+		
+		background-color:blue;
+		border: 1px solid black;
+		opacity: 0.60;
+	}
+	.ui-selected {
+		background-color: #ccc;
+	}
+</style>
+<script type='text/javascript' src='../lib/yui/yuiloader-dom-event/yuiloader-dom-event.js'></script>
+<script type='text/javascript'>
+	var Ex = YAHOO.namespace('example');
+	
+	Ex.init = function(){
+		var logger = new YAHOO.widget.LogReader();
+		logger.show();
+		
+		Ex.selectable = new YAHOO.util.Selectable('selectable');
+	}
+	
+	var loader = new YAHOO.util.YUILoader({
+		onSuccess: Ex.init
+	});
+	
+	loader.addModule({
+		name: 'selectable',
+		type: 'js',
+		fullpath: '../src/selectable/selectable.js',
+		requires: ['element']
+	});
+	
+	loader.require('logger','selectable');
+	
+	loader.insert();
+</script>
+</head>
+<body class='yui-skin-sam'>
+
+<div id='selectable'>
+	<div class='ui-selectable'>Item 1</div>
+	<div class='ui-selectable'>Item 2</div>
+	<div class='ui-selectable'>Item 3</div>
+	<div class='ui-selectable'>Item 4</div>
+	<div class='ui-selectable'>Item 5</div>
+	<div class='ui-selectable'>Item 6</div>
+	<div class='ui-selectable'>Item 7</div>
+	<div class='ui-selectable'>Item 8</div>
+	<div class='ui-selectable'>Item 9</div>
+	<div class='ui-selectable'>Item 10</div>
+	<div class='ui-selectable'>Item 11</div>
+	<div class='ui-selectable'>Item 12</div>
+</div>
+</body>
+</html>
